@@ -29,11 +29,17 @@ jobs:
       - name: Run a one-line script
         run: echo Hello, world!
 
+      # Login to DockerHub
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASS }}
+
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
           docker pull k8s.gcr.io/ingress-nginx/controller:v1.2.0
           docker images
           docker tag k8s.gcr.io/ingress-nginx/controller:v1.2.0 hjfeng1988/ingress-nginx-controller:v1.2.0
-          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker push hjfeng1988/ingress-nginx-controller:v1.2.0
